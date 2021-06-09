@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 #include "Person.h"
 
@@ -64,6 +65,12 @@ int main()
     func5( String() );
 
     // func5( p.GetNameByReference() ); // Compile error
+
+    std::cout << std::endl << "** make_shared<Person>( VALUE ) **" << std::endl << std::flush;
+    std::make_shared<Person>( p.GetNameByValue() );
+
+    std::cout << std::endl << "** make_shared<Person>( const REFERENCE ) **" << std::endl << std::flush;
+    std::make_shared<Person>( p.GetNameByReference() );
 
     return 0;
 }

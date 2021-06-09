@@ -46,62 +46,82 @@ public:
 ```
 
 ```c++
+Person p("Lakindu");
+
+String nameVal = p.GetNameByValue();            // [String] CopyConstructor
+const String& nameRef = p.GetNameByReference(); // no copying
+
+String s1 = String() + p.GetNameByValue();      // [String] CopyConstructor
+                                                // [String] DefaultConstructor
+                                                // [String] [+]Operator
+                                                // [String] CopyConstructor
+
+String s2 = String() + p.GetNameByReference();  // [String] DefaultConstructor
+                                                // [String] [+]Operator
+                                                // [String] CopyConstructor
+```
+
+```c++
 void func1(const String& aStr)   { String str = aStr; }
+
+func1( p.GetNameByValue() );                    // [String] CopyConstructor
+                                                // [String] CopyConstructor
+
+func1( p.GetNameByReference() );                // [String] CopyConstructor
+```
+
+```c++
 String getName1(const Person& p) { return p.GetNameByValue(); }
 String getName2(const Person& p) { return p.GetNameByReference(); }
+
+String s3 = getName1(p);                        // [String] CopyConstructor
+
+String s4 = getName2(p);                        // [String] CopyConstructor
+```
+
+```c++
 String func2(const Person& p)    { return p.GetNameByValue() + String(); }
 String func3(const Person& p)    { return p.GetNameByReference() + String(); }
+
+String s5 = func2(p);                           // [String] DefaultConstructor
+                                                // [String] CopyConstructor
+                                                // [String] [+]Operator
+                                                // [String] CopyConstructor
+
+String s6 = func3(p);                           // [String] DefaultConstructor
+                                                // [String] [+]Operator
+                                                // [String] DefaultConstructor
+```
+
+```c++
 void func4(String&& aStr)        { String str = std::move(aStr); }
 void func5(const String&& aStr)  { String str = std::move(aStr); }
 
-int main()
-{
-    Person p("Lakindu");
-    
-    String nameVal = p.GetNameByValue();            // [String] CopyConstructor
-    const String& nameRef = p.GetNameByReference(); // no copying
+func4( p.GetNameByValue() );                    // [String] CopyConstructor
+                                                // [String] MoveConstructor
 
-    String s1 = String() + p.GetNameByValue();      // [String] CopyConstructor
-                                                    // [String] DefaultConstructor
-                                                    // [String] [+]Operator
-                                                    // [String] CopyConstructor
+String s7 = p.GetNameByReference();             // [String] CopyConstructor
+func4( std::move(s3) );                         // [String] MoveConstructor
 
-    String s2 = String() + p.GetNameByReference();  // [String] DefaultConstructor
-                                                    // [String] [+]Operator
-                                                    // [String] CopyConstructor
+// func4( p.GetNameByReference() ); // Compile error
 
-    func1( p.GetNameByValue() );                    // [String] CopyConstructor
-                                                    // [String] CopyConstructor
+String s8;                                      // [String] DefaultConstructor
+func5( std::move(s5) );                         // [String] CopyConstructor
 
-    func1( p.GetNameByReference() );                // [String] CopyConstructor
+func5( String() );                              // [String] DefaultConstructor
+                                                // [String] CopyConstructor
 
-    String s3 = getName1(p);                        // [String] CopyConstructor
+// func5( p.GetNameByReference() ); // Compile error
+```
 
-    String s4 = getName2(p);                        // [String] CopyConstructor
+```c++
+std::make_shared<Person>( p.GetNameByValue() ); // [String] CopyConstructor
+                                                // [String] MoveConstructor
+                                                // [String] DefaultConstructor
+                                                // [Person] Constructor that takes in RValue
 
-    String s5 = func2(p);                           // [String] DefaultConstructor
-                                                    // [String] CopyConstructor
-                                                    // [String] [+]Operator
-                                                    // [String] CopyConstructor
-
-    String s6 = func3(p);                           // [String] DefaultConstructor
-                                                    // [String] [+]Operator
-                                                    // [String] DefaultConstructor
-
-    func4( p.GetNameByValue() );                    // [String] CopyConstructor
-                                                    // [String] MoveConstructor
-
-    String s7 = p.GetNameByReference();             // [String] CopyConstructor
-    func4( std::move(s3) );                         // [String] MoveConstructor
-    
-    // func4( p.GetNameByReference() ); // Compile error
-
-    String s8;                                      // [String] DefaultConstructor
-    func5( std::move(s5) );                         // [String] CopyConstructor
-
-    func5( String() );                              // [String] DefaultConstructor
-                                                    // [String] CopyConstructor
-
-    // func5( p.GetNameByReference() ); // Compile error
-}
+std::make_shared<Person>( p.GetNameByReference() );
+                                                // [String] CopyConstructor
+                                                // [String] DefaultConstructor
+                                                // [Person] Constructor that takes in LValue
 ```

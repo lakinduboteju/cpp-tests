@@ -11,8 +11,7 @@ private:
     String address {};
 
 public:
-    Person(const String& aName) :
-        name(aName)
+    Person(const String& aName) : name(aName)
     {
         std::cout << "[Person] Constructor that takes in LValue" << std::endl << std::flush;
     }
