@@ -115,12 +115,15 @@ func5( String() );                              // [String] DefaultConstructor
 ```
 
 ```c++
-std::make_shared<Person>( p.GetNameByValue() ); // [String] CopyConstructor
+Person p1("Sumudu");
+
+std::make_shared<Person>( p1.GetNameByValue() );
+                                                // [String] CopyConstructor
                                                 // [String] MoveConstructor
                                                 // [String] DefaultConstructor
                                                 // [Person] Constructor that takes in RValue
 
-std::make_shared<Person>( p.GetNameByReference() );
+std::make_shared<Person>( p1.GetNameByReference() );
                                                 // [String] CopyConstructor
                                                 // [String] DefaultConstructor
                                                 // [Person] Constructor that takes in LValue
