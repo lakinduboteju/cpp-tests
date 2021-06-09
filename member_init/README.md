@@ -91,3 +91,7 @@ class/struct Employee
 2. Calls `string(const char*);`
 
 Between these 2 calls, `1` is better because it saves us from creating temporary char array (`""`).
+
+### Reference
+
+* https://www.stroustrup.com/C++11FAQ.html#member-init
