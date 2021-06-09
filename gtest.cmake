@@ -1,0 +1,6 @@
+set( gtest_dir ${CMAKE_CURRENT_LIST_DIR}/googletest/googletest )
+set( lib_name gtest )
+add_library( ${lib_name} STATIC ${gtest_dir}/src/gtest_main.cc ${gtest_dir}/src/gtest-all.cc )
+target_include_directories( ${lib_name} PRIVATE ${gtest_dir} )
+target_include_directories( ${lib_name} PUBLIC ${gtest_dir}/include )
+target_link_libraries( ${lib_name} PUBLIC pthread )

@@ -18,3 +18,13 @@ set(exe_name object_alloc)
 add_executable(${exe_name}
     main.cpp
 )
+
+include(../gtest.cmake)
+
+set(exe_name object_alloc_test)
+add_executable(${exe_name}
+    Test.cpp
+)
+target_link_libraries(${exe_name} PRIVATE
+    gtest
+)
